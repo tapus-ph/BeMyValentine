@@ -605,15 +605,12 @@
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
     <div class="background-gradient"></div>
 
-    <!-- Config Screen -->
     <div class="config-screen" id="configScreen">
         <h1>💖 Create Your Valentine 💖</h1>
         
         <div class="config-container">
-            <!-- Form Section -->
             <div class="config-form">
                 <div class="form-group">
                     <label>Question Message:</label>
@@ -657,7 +654,6 @@ Happy Valentine's Day! 🌹</textarea>
                 </div>
             </div>
 
-            <!-- Preview Section -->
             <div class="preview-section">
                 <div class="preview-label">✨ Live Preview ✨</div>
                 <div class="preview-toggle">
@@ -665,7 +661,6 @@ Happy Valentine's Day! 🌹</textarea>
                     <button onclick="showSuccessPreview()" id="successPreviewBtn">Success</button>
                 </div>
                 <div class="preview-container" id="previewContainer">
-                    <!-- Question Preview -->
                     <div class="preview-card" id="questionPreview">
                         <div class="preview-heading">
                             <span style="margin: 0 5px;">💖</span>
@@ -678,7 +673,6 @@ Happy Valentine's Day! 🌹</textarea>
                         </div>
                     </div>
                     
-                    <!-- Success Preview -->
                     <div class="preview-card preview-success" id="successPreview">
                         <div class="preview-success-title">🎉 YAY! 🎉</div>
                         <div class="preview-success-message" id="previewSuccessMessage">I knew you'd say yes!<br><br>You've made me the<br>happiest person ever! 💖<br><br>Happy Valentine's Day! 🌹</div>
@@ -688,7 +682,6 @@ Happy Valentine's Day! 🌹</textarea>
         </div>
     </div>
 
-    <!-- Main Valentine Screen -->
     <div class="container hidden" id="questionContainer">
         <h1 id="questionHeading">
             <span class="pixel-heart">💖</span>
@@ -708,14 +701,12 @@ Happy Valentine's Day! 🌹</textarea>
         </div>
     </div>
 
-    <!-- Success Screen -->
     <div class="success-screen" id="successScreen">
         <div class="success-title">🎉 YAY! 🎉</div>
         <div class="success-message" id="successMessageDisplay"></div>
     </div>
 
     <script>
-        // Create floating background hearts
         function createBackgroundHearts() {
             const hearts = ['💖', '💕', '💗', '💓', '💝', '❤️'];
             setInterval(() => {
@@ -732,7 +723,6 @@ Happy Valentine's Day! 🌹</textarea>
             }, 800);
         }
 
-        // Create floating hearts in preview
         function createPreviewHearts() {
             const previewContainer = document.getElementById('previewContainer');
             if (!previewContainer) return;
@@ -752,7 +742,6 @@ Happy Valentine's Day! 🌹</textarea>
             }, 1500);
         }
 
-        // Update preview in real-time
         function updatePreview() {
             const questionText = document.getElementById('questionText').value || 'Will you be my Valentine?';
             const successText = document.getElementById('successText').value || 'I knew you\'d say yes!';
@@ -760,17 +749,14 @@ Happy Valentine's Day! 🌹</textarea>
             const color2 = document.getElementById('color2').value;
             const color3 = document.getElementById('color3').value;
 
-            // Update preview colors
             document.documentElement.style.setProperty('--color1', color1);
             document.documentElement.style.setProperty('--color2', color2);
             document.documentElement.style.setProperty('--color3', color3);
 
-            // Update preview text
             document.getElementById('previewQuestion').textContent = questionText;
             document.getElementById('previewSuccessMessage').innerHTML = successText.replace(/\n/g, '<br>');
         }
 
-        // Toggle between question and success preview
         function showQuestionPreview() {
             document.getElementById('questionPreview').classList.remove('preview-success');
             document.getElementById('successPreview').classList.remove('active');
@@ -785,13 +771,10 @@ Happy Valentine's Day! 🌹</textarea>
             document.getElementById('successPreviewBtn').classList.add('active');
         }
 
-        // Start background hearts
         createBackgroundHearts();
         
-        // Start preview hearts
         createPreviewHearts();
 
-        // URL Generation
         function generateURL() {
             const questionText = document.getElementById('questionText').value;
             const successText = document.getElementById('successText').value;
@@ -819,31 +802,25 @@ Happy Valentine's Day! 🌹</textarea>
             });
         }
 
-        // Check if we have URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         
         if (urlParams.has('q')) {
-            // Show valentine screen with custom config
             document.getElementById('configScreen').classList.add('hidden');
             document.getElementById('questionContainer').classList.remove('hidden');
             
-            // Apply custom configuration
             const questionText = urlParams.get('q');
             const successText = urlParams.get('s');
             const color1 = urlParams.get('c1');
             const color2 = urlParams.get('c2');
             const color3 = urlParams.get('c3');
 
-            // Set colors
             document.documentElement.style.setProperty('--color1', color1);
             document.documentElement.style.setProperty('--color2', color2);
             document.documentElement.style.setProperty('--color3', color3);
 
-            // Set text content
             document.getElementById('questionTextDisplay').textContent = questionText;
             document.getElementById('successMessageDisplay').innerHTML = successText.replace(/\n/g, '<br>');
 
-            // Initialize valentine functionality
             initValentine();
         }
 
@@ -859,7 +836,6 @@ Happy Valentine's Day! 🌹</textarea>
             let noClickCount = 0;
             let noButtonMovedAway = false;
             
-            // Add your meme images in the 'memes' folder
             const memeImages = [
                 'memes/1.jpeg',
                 'memes/2.jpeg',
@@ -913,31 +889,26 @@ Happy Valentine's Day! 🌹</textarea>
             noBtn.addEventListener('click', function(e) {
                 noClickCount++;
                 
-                // Show message (loop through messages)
                 message.textContent = messages[(noClickCount - 1) % messages.length];
                 
-                // Show a random meme image
                 if (memeImages.length > 0) {
                     const randomMeme = memeImages[Math.floor(Math.random() * memeImages.length)];
                     memeImage.src = randomMeme;
                     memeContainer.classList.add('show');
                     
-                    // Trigger animation
                     memeImage.style.animation = 'none';
                     setTimeout(() => {
                         memeImage.style.animation = 'memeAppear 0.5s ease';
                     }, 10);
                 }
                 
-                // Different animations and behaviors - now with MORE variations!
                 const behavior = noClickCount % 10;
                 
                 if (behavior === 0) {
-                    // Move to random position within safe viewport bounds
                     noBtn.style.position = 'fixed';
                     const btnWidth = noBtn.offsetWidth;
                     const btnHeight = noBtn.offsetHeight;
-                    const maxX = window.innerWidth - btnWidth - 20; // 20px padding from edge
+                    const maxX = window.innerWidth - btnWidth - 20;
                     const maxY = window.innerHeight - btnHeight - 20;
                     const minX = 20;
                     const minY = 20;
@@ -949,34 +920,28 @@ Happy Valentine's Day! 🌹</textarea>
                     noBtn.style.top = y + 'px';
                     noButtonMovedAway = true;
                 } else if (behavior === 1) {
-                    // Shrink the button
                     noBtn.classList.add('shrink');
                     setTimeout(() => noBtn.classList.remove('shrink'), 300);
                     const currentSize = parseInt(getComputedStyle(noBtn).fontSize);
                     noBtn.style.fontSize = Math.max(8, currentSize - 2) + 'px';
                     noBtn.style.padding = Math.max(8, parseInt(getComputedStyle(noBtn).padding) - 2) + 'px';
                 } else if (behavior === 2) {
-                    // Shake nervously
                     noBtn.classList.add('shake');
                     setTimeout(() => noBtn.classList.remove('shake'), 300);
                 } else if (behavior === 3) {
-                    // Change button text to something desperate
                     const desperateTexts = ["Wait!", "No! Stop!", "Really?!", "Seriously?!", "Come on!", "Why?!"];
                     noBtn.textContent = desperateTexts[Math.floor(Math.random() * desperateTexts.length)];
                     setTimeout(() => { noBtn.textContent = "No"; }, 1500);
                 } else if (behavior === 4) {
-                    // Make Yes button MUCH bigger
                     yesBtn.classList.add('grow');
                     setTimeout(() => yesBtn.classList.remove('grow'), 300);
                     const currentSize = parseInt(getComputedStyle(yesBtn).fontSize);
                     yesBtn.style.fontSize = (currentSize + 3) + 'px';
                     yesBtn.style.padding = (parseInt(getComputedStyle(yesBtn).padding) + 3) + 'px';
                 } else if (behavior === 5) {
-                    // Rotate and make button look dizzy
                     noBtn.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
                     setTimeout(() => { noBtn.style.transform = 'rotate(0deg)'; }, 500);
                 } else if (behavior === 6) {
-                    // Change button color temporarily to look scared
                     const originalBg = noBtn.style.background;
                     const originalColor = noBtn.style.color;
                     noBtn.style.background = '#FFCCCC';
@@ -986,7 +951,6 @@ Happy Valentine's Day! 🌹</textarea>
                         noBtn.style.color = originalColor;
                     }, 800);
                 } else if (behavior === 7) {
-                    // Button tries to hide (fade out and back)
                     noBtn.style.opacity = '0.3';
                     noBtn.style.cursor = 'not-allowed';
                     setTimeout(() => {
@@ -994,7 +958,6 @@ Happy Valentine's Day! 🌹</textarea>
                         noBtn.style.cursor = 'pointer';
                     }, 1000);
                 } else if (behavior === 8) {
-                    // Swap positions - reset if needed first
                     if (noButtonMovedAway) {
                         noBtn.style.position = 'relative';
                         noBtn.style.left = 'auto';
@@ -1006,7 +969,6 @@ Happy Valentine's Day! 🌹</textarea>
                     noBtnParent.insertBefore(noBtn, yesBtn);
                     noBtnParent.insertBefore(yesBtn, yesPosition);
                 } else {
-                    // Button vibrates intensely like it's panicking
                     let vibrations = 0;
                     const vibrateInterval = setInterval(() => {
                         noBtn.style.transform = `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`;
@@ -1023,10 +985,8 @@ Happy Valentine's Day! 🌹</textarea>
                 questionContainer.classList.add('hidden');
                 successScreen.classList.add('active');
                 
-                // Create fireworks
                 setInterval(createFirework, 300);
                 
-                // Create floating hearts
                 setInterval(createHeart, 500);
             });
 
