@@ -871,36 +871,36 @@
         @media (max-width: 768px) {
             .container {
                 padding: 30px;
-                width: 85%;
                 border: 6px solid var(--color2);
                 box-shadow: 
                     0 0 0 3px var(--color3),
                     0 0 0 6px var(--color1),
                     8px 8px 0 0 rgba(0, 0, 0, 0.2);
+                width: 92%;
             }
         }
 
         @media (max-width: 480px) {
             .container {
                 padding: 20px;
-                width: 90%;
                 border: 4px solid var(--color2);
                 box-shadow: 
                     0 0 0 2px var(--color3),
                     0 0 0 4px var(--color1),
                     6px 6px 0 0 rgba(0, 0, 0, 0.2);
+                width: 95%;
             }
         }
 
         @media (max-width: 375px) {
             .container {
                 padding: 15px;
-                width: 95%;
                 border: 3px solid var(--color2);
                 box-shadow: 
                     0 0 0 2px var(--color3),
                     0 0 0 3px var(--color1),
                     4px 4px 0 0 rgba(0, 0, 0, 0.2);
+                width: 98%;
             }
         }
 
@@ -933,7 +933,6 @@
             h1 {
                 font-size: 14px;
                 margin-bottom: 20px;
-                text-shadow: 1px 1px 0 var(--color1);
             }
         }
 
@@ -985,7 +984,7 @@
         @media (max-width: 768px) {
             button {
                 font-size: 16px;
-                padding: 18px 35px;
+                padding: 16px 32px;
                 border: 5px solid var(--color2);
                 box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.2);
             }
@@ -994,7 +993,7 @@
         @media (max-width: 480px) {
             button {
                 font-size: 14px;
-                padding: 15px 30px;
+                padding: 12px 24px;
                 border: 4px solid var(--color2);
                 box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.2);
             }
@@ -1003,7 +1002,7 @@
         @media (max-width: 375px) {
             button {
                 font-size: 12px;
-                padding: 12px 25px;
+                padding: 10px 20px;
                 border: 3px solid var(--color2);
                 box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.2);
             }
@@ -1060,7 +1059,7 @@
         @media (max-width: 480px) {
             .message {
                 margin-top: 20px;
-                font-size: 10px;
+                font-size: 11px;
                 min-height: 30px;
                 line-height: 1.6;
             }
@@ -1068,8 +1067,8 @@
 
         @media (max-width: 375px) {
             .message {
+                font-size: 10px;
                 margin-top: 15px;
-                font-size: 9px;
                 min-height: 25px;
             }
         }
@@ -1083,12 +1082,6 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease, opacity 0.3s ease;
-        }
-
-        @media (max-width: 480px) {
-            .meme-container {
-                margin-top: 15px;
-            }
         }
 
         .meme-container.show {
@@ -1218,7 +1211,6 @@
             .success-title {
                 font-size: 20px;
                 margin-bottom: 12px;
-                text-shadow: 1px 1px 0 var(--color1);
             }
         }
 
@@ -1246,7 +1238,6 @@
             .success-message {
                 font-size: 12px;
                 padding: 20px;
-                margin-top: 15px;
                 border: 4px solid var(--color2);
                 box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.2);
                 line-height: 1.6;
@@ -1255,7 +1246,7 @@
 
         @media (max-width: 375px) {
             .success-message {
-                font-size: 10px;
+                font-size: 11px;
                 padding: 15px;
                 border: 3px solid var(--color2);
                 box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.2);
@@ -1531,6 +1522,28 @@ Happy Valentine's Day! 🌹</textarea>
         
         createPreviewHearts();
 
+        function compressData(obj) {
+            const jsonStr = JSON.stringify(obj);
+            const compressed = btoa(unescape(encodeURIComponent(jsonStr)))
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=/g, '');
+            return compressed;
+        }
+
+        function decompressData(compressed) {
+            try {
+                const base64 = compressed
+                    .replace(/-/g, '+')
+                    .replace(/_/g, '/');
+                const padding = '='.repeat((4 - base64.length % 4) % 4);
+                const jsonStr = decodeURIComponent(escape(atob(base64 + padding)));
+                return JSON.parse(jsonStr);
+            } catch (e) {
+                return null;
+            }
+        }
+
         function generateURL() {
             const questionText = document.getElementById('questionText').value;
             const successText = document.getElementById('successText').value;
@@ -1538,15 +1551,17 @@ Happy Valentine's Day! 🌹</textarea>
             const color2 = document.getElementById('color2').value;
             const color3 = document.getElementById('color3').value;
 
-            const params = new URLSearchParams({
+            const data = {
                 q: questionText,
                 s: successText,
                 c1: color1,
                 c2: color2,
                 c3: color3
-            });
+            };
 
-            const url = window.location.origin + window.location.pathname + '?' + params.toString();
+            const compressed = compressData(data);
+            const url = window.location.origin + window.location.pathname + '?d=' + compressed;
+            
             document.getElementById('generatedURL').textContent = url;
             document.getElementById('urlOutput').style.display = 'block';
         }
@@ -1559,16 +1574,28 @@ Happy Valentine's Day! 🌹</textarea>
         }
 
         const urlParams = new URLSearchParams(window.location.search);
+        let questionText, successText, color1, color2, color3;
         
-        if (urlParams.has('q')) {
+        if (urlParams.has('d')) {
+            const data = decompressData(urlParams.get('d'));
+            if (data) {
+                questionText = data.q;
+                successText = data.s;
+                color1 = data.c1;
+                color2 = data.c2;
+                color3 = data.c3;
+            }
+        } else if (urlParams.has('q')) {
+            questionText = urlParams.get('q');
+            successText = urlParams.get('s');
+            color1 = urlParams.get('c1');
+            color2 = urlParams.get('c2');
+            color3 = urlParams.get('c3');
+        }
+        
+        if (questionText) {
             document.getElementById('configScreen').classList.add('hidden');
             document.getElementById('questionContainer').classList.remove('hidden');
-            
-            const questionText = urlParams.get('q');
-            const successText = urlParams.get('s');
-            const color1 = urlParams.get('c1');
-            const color2 = urlParams.get('c2');
-            const color3 = urlParams.get('c3');
 
             document.documentElement.style.setProperty('--color1', color1);
             document.documentElement.style.setProperty('--color2', color2);
