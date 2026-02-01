@@ -6,7 +6,7 @@ Create a personalized, playful website where the "No" button refuses to cooperat
 
 ---
 
-## 🎮 [**Create Your Valentine Message Here!**](https://bemyvalentine.github.io/)
+## 🎮 [**Create Your Valentine Message Here!**](https://tapus-ph.github.io/BeMyValentine/)
 
 Click the link above to get started - it's completely free and takes less than 2 minutes!
 
@@ -192,7 +192,7 @@ Remember: Everyone deserves to be asked in a special way. Whether they say yes o
 
 **Now go make someone's day!** ✨
 
-### [**→ Create Your Valentine Link Now! ←**](https://bemyvalentine.github.io/)
+### [**→ Create Your Valentine Link Now! ←**](https://tapus-ph.github.io/BeMyValentine/)
 
 ---
 
