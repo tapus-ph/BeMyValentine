@@ -872,18 +872,35 @@ Happy Valentine's Day! 🌹</textarea>
             
             const messages = [
                 "Are you sure? 🥺",
-                "Please? Pretty please? 🙏",
+                "Really? REALLY?! 😱",
+                "The No button is lava! 🔥",
                 "Think about it... 💭",
+                "My heart is breaking... 💔",
+                "Please? Pretty please? 🙏",
+                "I made you a website! 🎨",
                 "You don't mean that! 😢",
-                "I'll be sad... 😭",
-                "Just click YES! 😊",
-                "The YES button is right there! 👉",
+                "I'll cry... 😭",
+                "But... but... why? 🥹",
+                "Just click YES! It's right there! 👉",
                 "I won't give up! 💪",
                 "You're making this harder! 😅",
-                "One more chance? 🎲",
+                "The Yes button is lonely 😔",
                 "I believe in us! 💕",
+                "One more chance? Please? 🎲",
+                "I spent hours on this! ⏰",
                 "Don't be shy! 😳",
-                "You know you want to! 😏"
+                "Your finger slipped, right? 👆",
+                "Error 404: Love not found 🤖",
+                "This is your last chance! (jk) 😏",
+                "My cat is judging you 🐱",
+                "Even the memes agree! 📸",
+                "You know you want to! 😏",
+                "I'll keep asking forever! ♾️",
+                "Resistance is futile! 🛸",
+                "YES is just three letters! 🔤",
+                "I promise I don't bite! 😇",
+                "Can we talk about this? 🗣️",
+                "You're scrolling... just click YES! 📜"
             ];
 
             noBtn.addEventListener('click', function(e) {
@@ -905,8 +922,8 @@ Happy Valentine's Day! 🌹</textarea>
                     }, 10);
                 }
                 
-                // Different animations and behaviors
-                const behavior = noClickCount % 5;
+                // Different animations and behaviors - now with MORE variations!
+                const behavior = noClickCount % 10;
                 
                 if (behavior === 0) {
                     // Move to random position within safe viewport bounds
@@ -925,20 +942,53 @@ Happy Valentine's Day! 🌹</textarea>
                     noBtn.style.top = y + 'px';
                     noButtonMovedAway = true;
                 } else if (behavior === 1) {
-                    // Shrink
+                    // Shrink the button
                     noBtn.classList.add('shrink');
                     setTimeout(() => noBtn.classList.remove('shrink'), 300);
                     const currentSize = parseInt(getComputedStyle(noBtn).fontSize);
-                    noBtn.style.fontSize = Math.max(10, currentSize - 2) + 'px';
-                    noBtn.style.padding = Math.max(10, parseInt(getComputedStyle(noBtn).padding) - 2) + 'px';
+                    noBtn.style.fontSize = Math.max(8, currentSize - 2) + 'px';
+                    noBtn.style.padding = Math.max(8, parseInt(getComputedStyle(noBtn).padding) - 2) + 'px';
                 } else if (behavior === 2) {
-                    // Shake
+                    // Shake nervously
                     noBtn.classList.add('shake');
                     setTimeout(() => noBtn.classList.remove('shake'), 300);
                 } else if (behavior === 3) {
-                    // Swap positions - only if button is back in container
+                    // Change button text to something desperate
+                    const desperateTexts = ["Wait!", "No! Stop!", "Really?!", "Seriously?!", "Come on!", "Why?!"];
+                    noBtn.textContent = desperateTexts[Math.floor(Math.random() * desperateTexts.length)];
+                    setTimeout(() => { noBtn.textContent = "No"; }, 1500);
+                } else if (behavior === 4) {
+                    // Make Yes button MUCH bigger
+                    yesBtn.classList.add('grow');
+                    setTimeout(() => yesBtn.classList.remove('grow'), 300);
+                    const currentSize = parseInt(getComputedStyle(yesBtn).fontSize);
+                    yesBtn.style.fontSize = (currentSize + 3) + 'px';
+                    yesBtn.style.padding = (parseInt(getComputedStyle(yesBtn).padding) + 3) + 'px';
+                } else if (behavior === 5) {
+                    // Rotate and make button look dizzy
+                    noBtn.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+                    setTimeout(() => { noBtn.style.transform = 'rotate(0deg)'; }, 500);
+                } else if (behavior === 6) {
+                    // Change button color temporarily to look scared
+                    const originalBg = noBtn.style.background;
+                    const originalColor = noBtn.style.color;
+                    noBtn.style.background = '#FFCCCC';
+                    noBtn.style.color = '#FF0000';
+                    setTimeout(() => {
+                        noBtn.style.background = originalBg;
+                        noBtn.style.color = originalColor;
+                    }, 800);
+                } else if (behavior === 7) {
+                    // Button tries to hide (fade out and back)
+                    noBtn.style.opacity = '0.3';
+                    noBtn.style.cursor = 'not-allowed';
+                    setTimeout(() => {
+                        noBtn.style.opacity = '1';
+                        noBtn.style.cursor = 'pointer';
+                    }, 1000);
+                } else if (behavior === 8) {
+                    // Swap positions - reset if needed first
                     if (noButtonMovedAway) {
-                        // Reset button position first
                         noBtn.style.position = 'relative';
                         noBtn.style.left = 'auto';
                         noBtn.style.top = 'auto';
@@ -949,11 +999,16 @@ Happy Valentine's Day! 🌹</textarea>
                     noBtnParent.insertBefore(noBtn, yesBtn);
                     noBtnParent.insertBefore(yesBtn, yesPosition);
                 } else {
-                    // Make Yes button bigger
-                    yesBtn.classList.add('grow');
-                    setTimeout(() => yesBtn.classList.remove('grow'), 300);
-                    const currentSize = parseInt(getComputedStyle(yesBtn).fontSize);
-                    yesBtn.style.fontSize = (currentSize + 2) + 'px';
+                    // Button vibrates intensely like it's panicking
+                    let vibrations = 0;
+                    const vibrateInterval = setInterval(() => {
+                        noBtn.style.transform = `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`;
+                        vibrations++;
+                        if (vibrations > 20) {
+                            clearInterval(vibrateInterval);
+                            noBtn.style.transform = 'translate(0, 0)';
+                        }
+                    }, 50);
                 }
             });
 
