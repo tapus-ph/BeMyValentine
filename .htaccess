@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{THE_REQUEST} ^GET\ /valentine\.html
+RewriteRule ^valentine\.html$ /valentine [R=301,L]
+RewriteRule ^valentine$ valentine.html [L]
