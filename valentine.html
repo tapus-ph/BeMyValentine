@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color1: #FFE5EC;
+            --color2: #FF69B4;
+            --color3: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated gradient background */
+        .background-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--color1), var(--color2), var(--color3), var(--color1));
+            background-size: 400% 400%;
+            animation: gradientWave 15s ease infinite;
+            z-index: 0;
+        }
+
+        @keyframes gradientWave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating background hearts */
+        .bg-heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.3;
+            animation: floatAndPop 8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes floatAndPop {
+            0% {
+                transform: translateY(100vh) scale(1) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            80% {
+                opacity: 0.3;
+                transform: translateY(0) scale(1) rotate(360deg);
+            }
+            90% {
+                transform: translateY(-10vh) scale(1.5) rotate(380deg);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-15vh) scale(0) rotate(400deg);
+                opacity: 0;
+            }
+        }
+
+        /* Config Screen */
+        .config-screen {
+            background: var(--color3);
+            border: 8px solid var(--color2);
+            box-shadow: 
+                0 0 0 4px var(--color3),
+                0 0 0 8px var(--color1),
+                12px 12px 0 0 rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            position: relative;
+            z-index: 10;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .config-screen h1 {
+            color: var(--color2);
+            font-size: 20px;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 0 var(--color1);
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--color2);
+            font-size: 12px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            border: 4px solid var(--color2);
+            background: var(--color3);
+            color: var(--color2);
+            box-shadow: 4px 4px 0 0 var(--color1);
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .color-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .color-input-group {
+            text-align: center;
+        }
+
+        .color-input-group label {
+            font-size: 10px;
+            margin-bottom: 8px;
+        }
+
+        .color-input-group input[type="color"] {
+            width: 100%;
+            height: 60px;
+            border: 4px solid var(--color2);
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .generate-btn {
+            width: 100%;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            padding: 20px;
+            border: 6px solid var(--color2);
+            background: var(--color2);
+            color: var(--color3);
+            cursor: pointer;
+            box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .generate-btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .url-output {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--color1);
+            border: 4px solid var(--color2);
+            word-break: break-all;
+            font-size: 10px;
+            line-height: 1.8;
+            display: none;
+        }
+
+        .copy-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            border: 4px solid var(--color2);
+            background: var(--color3);
+            color: var(--color2);
+            cursor: pointer;
+        }
+
+        /* Main Valentine Screen */
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: var(--color3);
+            border: 8px solid var(--color2);
+            box-shadow: 
+                0 0 0 4px var(--color3),
+                0 0 0 8px var(--color1),
+                12px 12px 0 0 rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            position: relative;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: var(--color2);
+            font-size: 24px;
+            margin-bottom: 40px;
+            text-shadow: 4px 4px 0 var(--color1);
+            line-height: 1.6;
+            image-rendering: pixelated;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            min-height: 80px;
+        }
+
+        button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            padding: 20px 40px;
+            border: 6px solid var(--color2);
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.2);
+            image-rendering: pixelated;
+        }
+
+        button:active {
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.2);
+        }
+
+        #yesBtn {
+            background: var(--color2);
+            color: var(--color3);
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.05);
+            filter: brightness(0.9);
+        }
+
+        #noBtn {
+            background: var(--color3);
+            color: var(--color2);
+            position: relative;
+        }
+
+        #noBtn:hover {
+            background: var(--color1);
+        }
+
+        .message {
+            margin-top: 30px;
+            font-size: 14px;
+            color: var(--color2);
+            min-height: 40px;
+            line-height: 1.8;
+        }
+
+        .meme-container {
+            margin-top: 20px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+
+        .meme-container.show {
+            display: flex;
+            opacity: 1;
+            max-height: 400px;
+        }
+
+        #memeImage {
+            max-width: 100%;
+            width: 300px;
+            height: auto;
+            border: 6px solid var(--color2);
+            box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.2);
+            image-rendering: pixelated;
+            animation: memeAppear 0.5s ease;
+        }
+
+        @keyframes memeAppear {
+            from { 
+                opacity: 0; 
+                transform: scale(0.8) rotate(-5deg); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1) rotate(0deg); 
+            }
+        }
+
+        /* Success Screen */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .success-screen.active {
+            display: block;
+        }
+
+        .success-title {
+            font-size: 32px;
+            color: var(--color2);
+            margin-bottom: 20px;
+            text-shadow: 4px 4px 0 var(--color1);
+            animation: bounce 0.6s infinite alternate;
+        }
+
+        .success-message {
+            font-size: 16px;
+            color: var(--color2);
+            margin-top: 20px;
+            line-height: 1.8;
+            background: var(--color3);
+            padding: 30px;
+            border: 8px solid var(--color2);
+            box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        /* Fireworks */
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+            z-index: 100;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y));
+                opacity: 0;
+            }
+        }
+
+        /* Hearts */
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            animation: float 3s ease-in-out infinite;
+            opacity: 0;
+            z-index: 100;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .pixel-heart {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .shake {
+            animation: shake 0.3s;
+        }
+
+        @keyframes shrink {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.8); }
+            100% { transform: scale(1); }
+        }
+
+        .shrink {
+            animation: shrink 0.3s;
+        }
+
+        @keyframes grow {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .grow {
+            animation: grow 0.3s;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-gradient"></div>
+
+    <!-- Config Screen -->
+    <div class="config-screen" id="configScreen">
+        <h1>💖 Create Your Valentine 💖</h1>
+        
+        <div class="form-group">
+            <label>Question Message:</label>
+            <textarea id="questionText" placeholder="Will you be my Valentine?">Will you be my Valentine?</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Success Message:</label>
+            <textarea id="successText" placeholder="I knew you'd say yes!...">I knew you'd say yes!
+
+You've made me the
+happiest person ever! 💖
+
+Happy Valentine's Day! 🌹</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Choose Your Colors:</label>
+            <div class="color-inputs">
+                <div class="color-input-group">
+                    <label>Color 1<br>(Light)</label>
+                    <input type="color" id="color1" value="#FFE5EC">
+                </div>
+                <div class="color-input-group">
+                    <label>Color 2<br>(Main)</label>
+                    <input type="color" id="color2" value="#FF69B4">
+                </div>
+                <div class="color-input-group">
+                    <label>Color 3<br>(Background)</label>
+                    <input type="color" id="color3" value="#FFFFFF">
+                </div>
+            </div>
+        </div>
+
+        <button class="generate-btn" onclick="generateURL()">Generate Link! 🎉</button>
+
+        <div class="url-output" id="urlOutput">
+            <div style="margin-bottom: 10px; color: var(--color2);">Share this link:</div>
+            <div id="generatedURL"></div>
+            <button class="copy-btn" onclick="copyURL()">Copy Link 📋</button>
+        </div>
+    </div>
+
+    <!-- Main Valentine Screen -->
+    <div class="container hidden" id="questionContainer">
+        <h1 id="questionHeading">
+            <span class="pixel-heart">💖</span>
+            <span id="questionTextDisplay"></span>
+            <span class="pixel-heart">💖</span>
+        </h1>
+        
+        <div class="button-container">
+            <button id="yesBtn">YES! 💕</button>
+            <button id="noBtn">No</button>
+        </div>
+        
+        <div class="message" id="message"></div>
+        
+        <div class="meme-container" id="memeContainer">
+            <img id="memeImage" src="" alt="Please say yes!">
+        </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div class="success-screen" id="successScreen">
+        <div class="success-title">🎉 YAY! 🎉</div>
+        <div class="success-message" id="successMessageDisplay"></div>
+    </div>
+
+    <script>
+        // Create floating background hearts
+        function createBackgroundHearts() {
+            const hearts = ['💖', '💕', '💗', '💓', '💝', '❤️'];
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'bg-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (15 + Math.random() * 20) + 'px';
+                heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 10000);
+            }, 800);
+        }
+
+        // Start background hearts
+        createBackgroundHearts();
+
+        // URL Generation
+        function generateURL() {
+            const questionText = document.getElementById('questionText').value;
+            const successText = document.getElementById('successText').value;
+            const color1 = document.getElementById('color1').value;
+            const color2 = document.getElementById('color2').value;
+            const color3 = document.getElementById('color3').value;
+
+            const params = new URLSearchParams({
+                q: questionText,
+                s: successText,
+                c1: color1,
+                c2: color2,
+                c3: color3
+            });
+
+            const url = window.location.origin + window.location.pathname + '?' + params.toString();
+            document.getElementById('generatedURL').textContent = url;
+            document.getElementById('urlOutput').style.display = 'block';
+        }
+
+        function copyURL() {
+            const url = document.getElementById('generatedURL').textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copied! 💖');
+            });
+        }
+
+        // Check if we have URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (urlParams.has('q')) {
+            // Show valentine screen with custom config
+            document.getElementById('configScreen').classList.add('hidden');
+            document.getElementById('questionContainer').classList.remove('hidden');
+            
+            // Apply custom configuration
+            const questionText = urlParams.get('q');
+            const successText = urlParams.get('s');
+            const color1 = urlParams.get('c1');
+            const color2 = urlParams.get('c2');
+            const color3 = urlParams.get('c3');
+
+            // Set colors
+            document.documentElement.style.setProperty('--color1', color1);
+            document.documentElement.style.setProperty('--color2', color2);
+            document.documentElement.style.setProperty('--color3', color3);
+
+            // Set text content
+            document.getElementById('questionTextDisplay').textContent = questionText;
+            document.getElementById('successMessageDisplay').innerHTML = successText.replace(/\n/g, '<br>');
+
+            // Initialize valentine functionality
+            initValentine();
+        }
+
+        function initValentine() {
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const message = document.getElementById('message');
+            const questionContainer = document.getElementById('questionContainer');
+            const successScreen = document.getElementById('successScreen');
+            const memeImage = document.getElementById('memeImage');
+            const memeContainer = document.getElementById('memeContainer');
+            
+            let noClickCount = 0;
+            
+            // Add your meme images in the 'memes' folder
+            const memeImages = [
+                'memes/1.jpeg',
+                'memes/2.jpeg',
+                'memes/3.jpeg',
+                'memes/4.jpeg',
+                'memes/5.jpeg',
+                'memes/6.jpeg',
+                'memes/7.jpeg',
+                'memes/8.jpeg',
+                'memes/9.jpeg',
+                'memes/10.jpeg',
+                'memes/11.jpeg',
+                'memes/12.jpeg',
+                'memes/13.jpeg',
+                'memes/14.jpeg',
+            ];
+            
+            const messages = [
+                "Are you sure? 🥺",
+                "Please? Pretty please? 🙏",
+                "Think about it... 💭",
+                "You don't mean that! 😢",
+                "I'll be sad... 😭",
+                "Just click YES! 😊",
+                "The YES button is right there! 👉",
+                "I won't give up! 💪",
+                "You're making this harder! 😅",
+                "One more chance? 🎲",
+                "I believe in us! 💕",
+                "Don't be shy! 😳",
+                "You know you want to! 😏"
+            ];
+
+            noBtn.addEventListener('click', function(e) {
+                noClickCount++;
+                
+                // Show message (loop through messages)
+                message.textContent = messages[(noClickCount - 1) % messages.length];
+                
+                // Show a random meme image
+                if (memeImages.length > 0) {
+                    const randomMeme = memeImages[Math.floor(Math.random() * memeImages.length)];
+                    memeImage.src = randomMeme;
+                    memeContainer.classList.add('show');
+                    
+                    // Trigger animation
+                    memeImage.style.animation = 'none';
+                    setTimeout(() => {
+                        memeImage.style.animation = 'memeAppear 0.5s ease';
+                    }, 10);
+                }
+                
+                // Different animations and behaviors
+                const behavior = noClickCount % 5;
+                
+                if (behavior === 0) {
+                    // Move to random position
+                    const x = Math.random() * (window.innerWidth - 200);
+                    const y = Math.random() * (window.innerHeight - 100);
+                    noBtn.style.position = 'absolute';
+                    noBtn.style.left = x + 'px';
+                    noBtn.style.top = y + 'px';
+                } else if (behavior === 1) {
+                    // Shrink
+                    noBtn.classList.add('shrink');
+                    setTimeout(() => noBtn.classList.remove('shrink'), 300);
+                    const currentSize = parseInt(getComputedStyle(noBtn).fontSize);
+                    noBtn.style.fontSize = Math.max(10, currentSize - 2) + 'px';
+                    noBtn.style.padding = Math.max(10, parseInt(getComputedStyle(noBtn).padding) - 2) + 'px';
+                } else if (behavior === 2) {
+                    // Shake
+                    noBtn.classList.add('shake');
+                    setTimeout(() => noBtn.classList.remove('shake'), 300);
+                } else if (behavior === 3) {
+                    // Swap positions
+                    const noBtnParent = noBtn.parentElement;
+                    const yesPosition = yesBtn.nextSibling;
+                    noBtnParent.insertBefore(noBtn, yesBtn);
+                    noBtnParent.insertBefore(yesBtn, yesPosition);
+                } else {
+                    // Make Yes button bigger
+                    yesBtn.classList.add('grow');
+                    setTimeout(() => yesBtn.classList.remove('grow'), 300);
+                    const currentSize = parseInt(getComputedStyle(yesBtn).fontSize);
+                    yesBtn.style.fontSize = (currentSize + 2) + 'px';
+                }
+            });
+
+            yesBtn.addEventListener('click', function() {
+                questionContainer.classList.add('hidden');
+                successScreen.classList.add('active');
+                
+                // Create fireworks
+                setInterval(createFirework, 300);
+                
+                // Create floating hearts
+                setInterval(createHeart, 500);
+            });
+
+            function createFirework() {
+                const color1 = getComputedStyle(document.documentElement).getPropertyValue('--color1');
+                const color2 = getComputedStyle(document.documentElement).getPropertyValue('--color2');
+                const colors = [color1, color2, '#FFB6C1', '#FFC0CB', '#FF66CC'];
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                
+                for (let i = 0; i < 30; i++) {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = x + 'px';
+                    firework.style.top = y + 'px';
+                    firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    const angle = (Math.PI * 2 * i) / 30;
+                    const velocity = 50 + Math.random() * 100;
+                    firework.style.setProperty('--x', Math.cos(angle) * velocity + 'px');
+                    firework.style.setProperty('--y', Math.sin(angle) * velocity + 'px');
+                    
+                    document.body.appendChild(firework);
+                    
+                    setTimeout(() => firework.remove(), 1000);
+                }
+            }
+
+            function createHeart() {
+                const hearts = ['💖', '💕', '💗', '💓', '💝', '🌹', '✨'];
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+                heart.style.animationDelay = Math.random() + 's';
+                
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 4000);
+            }
+        }
+    </script>
+</body>
+</html>
